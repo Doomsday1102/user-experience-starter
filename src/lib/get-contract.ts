@@ -1,16 +1,16 @@
 import { Address, getContract as thirdwebGetContract, Chain } from "thirdweb";
 import {client} from "@/lib/thirdwebClient";
-import anvil from "@/lib/anvil";
+import { optimism } from "thirdweb/chains";
 
 type GetContractOptions = {
     address: Address;
-    chain?: Chain
-}
+    chain?: Chain;
+};
 
 export default function getContract(options: GetContractOptions) {
     return thirdwebGetContract({
         client,
-        chain: options.chain ?? anvil,
-        address: options.address
+        chain: optimism,
+        address: options.address,
     });
 }

@@ -4,6 +4,7 @@ import thirdwebIcon from "@public/thirdweb.svg";
 import { client } from "@/lib/thirdwebClient";
 import MintButton from "@/components/MintButton";
 import BalanceButton from "@/components/BalanceButton";
+import Swapper from "@/components/Swapper";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
           />
           <MintButton contractAddress={"this is a contract"} />
           <BalanceButton contractAddress="this is a contract"/>
+          <Swapper />
         </div>
 
         <ThirdwebResources />
