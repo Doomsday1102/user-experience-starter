@@ -5,9 +5,10 @@ import { getContract, prepareContractCall } from "thirdweb";
 
 import { optimism } from "thirdweb/chains";
 import { client } from "@/lib/thirdwebClient";
-import { useCallback, useMemo } from "react";
-import { useSendTransaction } from "thirdweb/react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useActiveAccount, useSendTransaction } from "thirdweb/react";
 import { parseUnits } from "ethers";
+import { readContract } from "thirdweb";
 
 export default function MintButton(props: Props) {
   const {
@@ -31,6 +32,33 @@ export default function MintButton(props: Props) {
       }),
     []
   );
+ 
+
+  const address = useActiveAccount();
+  const [balance, setBalance] = useState(0n);
+  const [nextButtonClicked, setNextButtonClicked] = useState(false);
+  const [checkBalanceClicked, setCheckBalanceClicked] = useState(false);
+
+  useEffect(() => {
+    if (checkBalanceClicked) {
+      async function run() {
+        console.log(address?.address);
+        if (address?.address) {
+          const balance = await readContract({
+            contract: contract,
+            method: "function balanceOf(address) view returns (uint256)",
+            params: [address?.address],
+          });
+          console.log("balance");
+          console.log(balance);
+          setBalance(balance);
+        }
+      }
+
+      run();
+      setCheckBalanceClicked(false); // Reset state if you want to allow subsequent clicks
+    }
+  }, [checkBalanceClicked, address?.address, contract]);
 
   const onClick = useCallback(async () => {
     const transaction = prepareContractCall({
@@ -58,10 +86,19 @@ export default function MintButton(props: Props) {
           onClick();
         }}
       >
-        mint 10.5 tokens
+        mint button
+      </button>
+      <button
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        onClick={() => {
+          console.log("check balance");
+          setCheckBalanceClicked(true);
+        }}
+      >
+        Check Balance
       </button>
 
-      <p>data</p>
+      <p>balance: {balance.toString()}</p>
     </div>
   );
 }
