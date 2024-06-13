@@ -3,6 +3,7 @@ import { ConnectButton } from "thirdweb/react";
 import thirdwebIcon from "@public/thirdweb.svg";
 import { client } from "@/lib/thirdwebClient";
 import MintButton from "@/components/MintButton";
+import BalanceButton from "@/components/BalanceButton";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
             }}
           />
           <MintButton contractAddress={"this is a contract"} />
+          <BalanceButton contractAddress="this is a contract"/>
         </div>
 
         <ThirdwebResources />
